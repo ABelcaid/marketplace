@@ -1,38 +1,52 @@
-import DashBordAdmin from "../sideBar/SideBarAdmin";
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import SideBarAdmin from "../sideBar/SideBarAdmin";
-const AddAdmin = () => {
+import axios from "axios";
+import { useEffect, useState } from "react";
+import UserDashbord from "./UserDashbord";
+import toastr from 'toastr';
+import "toastr/build/toastr.css";
 
-  const [name,setName] = useState('');
-  const [email ,setEmail] = useState('');
-  const [phone ,setPhone] = useState('');
-  const [password,setPassword] = useState('');
-  const [role,setRole] = useState('');
-  const [city,setCity] = useState('');
-  const [admins,setAdmins] = useState(null);
+const ProductManagement = () => {
 
-  let token = localStorage.getItem("token");
-
+    const [name,setName] = useState('');
+    const [price ,setPrice] = useState('');
+    const [image ,setImage] = useState('');
+    const [description,setDescription] = useState('');
+    const [category,setCategory] = useState('');
+  
 
 
-  const handleSubmit = (e) => {
+  const [products,setProducts] = useState(null);
+  
+
+  
+
+
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
 
-    const admin = {name,email,phone,password,role,city};
+    const product = {name,price,image,description,category};
+
+    let res = await axios.post(`${process.env.REACT_APP_URL_API}/product/addProduct`, product)
+
+
+    if(res.data.error !== undefined){
+
+      res.data.error.forEach(item =>{
+
+          toastr.warning(item ,{
+              positionClass: "toast-top-left",
+          })
+      })
+
+    } else{
+      toastr.info( res.data.message, {
+      positionClass: "toast-top-left",
+    })
+    }
  
 
-    axios.post(`${process.env.REACT_APP_URL_API}/admin/add`, admin, {
-      headers: {
-        'Authorization': `Bearer ${token}` 
-      }}
-    )
-    .then(res => {
-      console.log(res.data);
-     
-      
-     
-    })
+   
+
 
   }
 
@@ -40,24 +54,26 @@ const AddAdmin = () => {
   // ----------------------detete admin --------------------------
 
 
-    const handleDelete = (id) => {
+//     const handleDelete = (id) => {
 
  
-    axios.delete(`${process.env.REACT_APP_URL_API}/admin/deleteAdmin/${id}`)
-    .then(res => {
-      console.log(res);
+//     axios.delete(`${process.env.REACT_APP_URL_API}/admin/deleteAdmin/${id}`)
+//     .then(res => {
+//       console.log(res);
        
-    })
+//     })
 
-  }
+//   }
+
+
 
 
   useEffect(()=>{
 
-    axios.get('http://localhost:8080/admin/all')
+    axios.get(`${process.env.REACT_APP_URL_API}/product/myProducts`)
     .then(function (response) {
      
-      setAdmins(response.data)
+      setProducts(response.data)
     
     }).catch(function (err) {
       console.log(err);
@@ -71,23 +87,25 @@ const AddAdmin = () => {
         <>
            <div className="flex flex-wrap bg-gray-100 w-full h-screen">
 
-            <SideBarAdmin/>
+            <UserDashbord/>
 
 
             <div className="w-9/12   ">
                 <div className="p-4 text-gray-500">
-                    Content here...
+                   ...
                     <div className=" min-w-screen  bg-gray-100 flex items-center justify-center  font-sans overflow-hidden mt-10 sm:mt-0">
                         <div className=" w-full lg:w-5/6">
 
                             <div className="mt-5 md:mt-0 md:col-span-2">
                                 <form onSubmit={handleSubmit}>
                                     <div className="shadow overflow-hidden sm:rounded-md">
+                                       <h1>Add New Product</h1>
                                         <div className="px-4 py-5 bg-white sm:p-6">
+                                            
                                             <div className="grid grid-cols-6 gap-6">
                                                 <div className="col-span-6 sm:col-span-3">
                                                     <label htmlFor="first_name"
-                                                        className="block text-sm font-medium text-gray-700">Full
+                                                        className="block text-sm font-medium text-gray-700">
                                                         name</label>
 
                                                     <input type="text" name="name" id="name"
@@ -98,59 +116,54 @@ const AddAdmin = () => {
                                                         />
                                                 </div>
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="Phone"
-                                                        className="block text-sm font-medium text-gray-700">Phone</label>
+                                                    <label htmlFor="Price"
+                                                        className="block text-sm font-medium text-gray-700">Price</label>
 
-                                                    <input type="text" name="Phone" id="Phone"
+                                                    <input type="text" id="Price"
                                                        
                                                         className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                                                        value={phone}
-                                                        onChange={(e)=>setPhone(e.target.value)}
+                                                        value={price}
+                                                        onChange={(e)=>setPrice(e.target.value)}
                                                         />
                                                 </div>
                                                 <div className="col-span-6 sm:col-span-4">
-                                                    <label htmlFor="email_address"
-                                                        className="block text-sm font-medium text-gray-700">Email
-                                                        address</label>
+                                                    <label htmlFor="Description"
+                                                        className="block text-sm font-medium text-gray-700">Description</label>
 
-                                                    <input type="eamil" name="email_address" id="email_address"
+                                                    <input type="text"  id="Description"
                                                         
                                                         className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                                        value={email}
-                                                        onChange={(e)=>setEmail(e.target.value)}
+                                                        value={description}
+                                                        onChange={(e)=>setDescription(e.target.value)}
                                                         />
                                                 </div>
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="role"
-                                                        className="block text-sm font-medium text-gray-700">Role</label>
-                                                    <select id="role" name="role" autoComplete="role"
+                                                    <label htmlFor="Category"
+                                                        className="block text-sm font-medium text-gray-700">Category</label>
+                                                    <select id="Category"  autoComplete="Category"
                                                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                        value={role}
-                                                        onChange={(e)=>setRole(e.target.value)}
+                                                        value={category}
+                                                        onChange={(e)=>setCategory(e.target.value)}
                                                         >
-                                                        <option value="root">root</option>
-                                                        <option value="admin">admin</option>
+                                                        <option value="root">diamond</option>
+                                                        <option value="root"> Gold</option>
+                                                        <option value="root">metal</option>
+                                                        <option value="root">silver</option>
+                                                        <option value="root">copper</option>
+                                                        
                                                     </select>
                                                 </div>
                                      
                                                 <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                                    <label htmlFor="password"
-                                                        className="block text-sm font-medium text-gray-700">password</label>
-                                                    <input type="password" name="password" id="password"
+                                                    <label htmlFor="image"
+                                                        className="block text-sm font-medium text-gray-700">Image</label>
+                                                    <input type="text"  id="image"
                                                         className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                                                        value={password}
-                                                        onChange={(e)=>setPassword(e.target.value)}
+                                                        value={image}
+                                                        onChange={(e)=>setImage(e.target.value)}
                                                         />
                                                 </div>
-                                                <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                    <label htmlFor="city"
-                                                        className="block text-sm font-medium text-gray-700">City</label>
-                                                    <input type="text" name="city" id="city"
-                                                        className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                                                        value={city}
-                                                        onChange={(e)=>setCity(e.target.value)}
-                                                        />
-                                                </div>
+                                 
 
                                             </div>
                                         </div>
@@ -166,7 +179,7 @@ const AddAdmin = () => {
                         </div>
                     </div>
 
-                    {/* table of admins */}
+                    {/* table of products */}
 
                     
       
@@ -177,49 +190,55 @@ const AddAdmin = () => {
               <table className="min-w-max w-full table-auto">
                 <thead>
                   <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th className="py-3 px-6 text-left">Full Name</th>
-                    <th className="py-3 px-6 text-left">Phone</th>
-                    <th className="py-3 px-6 text-center">Email Address</th>
-                    <th className="py-3 px-6 text-center">Role</th>
-                    <th className="py-3 px-6 text-center">City</th>
+                    <th className="py-3 px-6 text-left"> Name</th>
+                    <th className="py-3 px-6 text-left">Price</th>
+                    <th className="py-3 px-6 text-center">Description</th>
+                    <th className="py-3 px-6 text-center"> Category</th>
+                    {/* <th className="py-3 px-6 text-center">City</th> */}
                     <th className="py-3 px-6 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
                   
                   {
-                    admins &&
-                    admins.map((admin) =>(
+                    products &&
+                    products.map((product) =>(
 
-                      <tr key={admin._id} className="border-b border-gray-200 hover:bg-gray-100">
+                      <tr key={product._id} className="border-b border-gray-200 hover:bg-gray-100">
                       <td className="py-3 px-6 text-left whitespace-nowrap">
                         <div className="flex items-center">
-                          <span className="font-medium">{admin.name}</span>
+                          <span className="font-medium">{product.name}</span>
                         </div>
+                        <img className="w-40" src={product.image} alt="" srcset=""/>
                       </td>
                       <td className="py-3 px-6 text-left">
                         <div className="flex items-center">
-                          <span className="font-medium">{admin.phone}</span>
+                          <span className="font-medium">{product.price}</span>
                         </div>
                       </td>
                       <td className="py-3 px-6 text-center">
                         <div className="flex items-center justify-center">
-                          <samp className="font-medium">{admin.email}</samp>
+                          <samp className="font-medium">{product.description}</samp>
                         </div>
                       </td>
                       <td className="py-3 px-6 text-center">
-                        <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">{admin.role}</span>
+                        <span className="bg-purple-200 text-purple-600 py-1 px-3 rounded-full text-xs">{product.category}</span>
                       </td>
-                      <td className="py-3 px-6 text-left whitespace-nowrap">
+                      {/* <td className="py-3 px-6 text-left whitespace-nowrap">
                         <div className="flex items-center justify-center">
-                          <span className="font-medium">{admin.city}</span>
+                          <span className="font-medium">{product.city}</span>
                         </div>
-                      </td>
+                      </td> */}
                       <td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">
-                          <div onClick={()=>{handleDelete(admin._id)}} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
+                          <div  className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
                             <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </div>
+                          <div  className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                             </svg>
 
                           </div>
@@ -247,4 +266,4 @@ const AddAdmin = () => {
      );
 }
  
-export default AddAdmin;
+export default ProductManagement;

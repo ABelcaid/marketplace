@@ -21,7 +21,7 @@ const UpdatePassword = () => {
     e.preventDefault();
 
     try {
-      const res = await  axios.post(`${process.env.REACT_APP_URL_API}/admin/updatePassword`, {password : password});
+      const res = await  axios.put(`${process.env.REACT_APP_URL_API}/admin/updatePassword`, {password : password});
 
   
               history.push('/admin');

@@ -33,6 +33,8 @@ const Login = () => {
       setFirstLogin(res.data.first_login);
       setRole(res.data.role);
 
+      localStorage.setItem('adminName',res.data.adminName)
+
 
 
 
