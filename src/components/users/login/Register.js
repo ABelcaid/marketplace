@@ -8,6 +8,7 @@ import "toastr/build/toastr.css";
 
 import Footer from "../../global/Footer";
 import NavBar from "../../global/NavBar";
+import { Link } from 'react-router-dom';
 
 
 
@@ -69,7 +70,7 @@ const Register = () => {
     <>
             <NavBar/>
         
-        <section className="text-gray-600 body-font">
+        <section className="text-gray-600 body-font h-screen">
             <form action="" onSubmit={handleSubmit}>
 
             
@@ -118,8 +119,11 @@ const Register = () => {
                     />
                 </div>
 
-                <button type="submit" className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create an account</button>
+                <button type="submit" className="text-white  bg-blue-500 hover:bg-blue-700 border-0 py-2 px-8 focus:outline-none  rounded text-lg">Create an account</button>
+                
+                <Link to={'/login'}>
                 <p className="text-xs text-gray-500 mt-3">Already have an account log in here</p>
+                </Link>
                 </div>
             </div>
             </form>

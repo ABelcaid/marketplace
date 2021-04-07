@@ -5,19 +5,19 @@ import toastr from 'toastr';
 import "toastr/build/toastr.css";
 
 
-const AddSeller = () => {
+const SellerManagement = () => {
 
-    const [wantToBeSeller ,setWantToBeSeller] = useState('');
-
-
+    const [sellers ,setSellers] = useState('');
 
 
 
 
-    const makeItSeller = (id) => {
+
+
+    const deleteSeller = (id) => {
 
  
-    axios.put(`${process.env.REACT_APP_URL_API}/makeItSeller/${id}`)
+    axios.delete(`${process.env.REACT_APP_URL_API}/deleteSeller/${id}`)
     .then(res => {
       console.log(res);
 
@@ -32,10 +32,10 @@ const AddSeller = () => {
 
   useEffect(()=>{
 
-    axios.get(`${process.env.REACT_APP_URL_API}/wantToBeSeller`)
+    axios.get(`${process.env.REACT_APP_URL_API}/sellersList`)
     .then(function (response) {
      
-        setWantToBeSeller(response.data)
+        setSellers(response.data)
     
     }).catch(function (err) {
       console.log(err);
@@ -71,14 +71,14 @@ const AddSeller = () => {
                     <th className="py-3 px-6 text-left">Phone</th>
                     <th className="py-3 px-6 text-center">Email Address</th>
                     <th className="py-3 px-6 text-center">Address</th>
-                    <th className="py-3 px-6 text-center">Make it Seller</th>
+                    <th className="py-3 px-6 text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-light">
                   
                   {
-                    wantToBeSeller &&
-                    wantToBeSeller.map((seller) =>(
+                    sellers &&
+                    sellers.map((seller) =>(
 
                       <tr key={seller._id} className="border-b border-gray-200 hover:bg-gray-100">
                       <td className="py-3 px-6 text-left whitespace-nowrap">
@@ -104,10 +104,11 @@ const AddSeller = () => {
                       </td>
                       <td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">
-                          <div onClick={()=>{makeItSeller(seller._id)}} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                          </svg>
+                          <div onClick={()=>{deleteSeller(seller._id)}} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                           </svg>
 
                           </div>
                         </div>
@@ -134,4 +135,6 @@ const AddSeller = () => {
      );
 }
  
-export default AddSeller;
+export default SellerManagement;
+
+

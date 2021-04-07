@@ -4,7 +4,6 @@ import AddAdmin from './components/admin/addAdmin/AddAdmin';
 import UpdatePassword from "./components/admin/login/UpdatePassword";
 import { useContext } from "react";
 import AuthContext from "./context/AuthContext";
-import SideBarAdmin from "./components/admin/sideBar/SideBarAdmin";
 import Home from "./components/home/Home";
 import Register from "./components/users/login/Register";
 import LoginUser from "./components/users/login/LoginUser";
@@ -16,7 +15,10 @@ import AccountType from "./components/users/dashbord/AccountType";
 import Statistic from "./components/users/dashbord/Statistic";
 import ProductsByCategory from "./components/home/ProductsByCategory";
 import ProductDetails from "./components/home/ProductDetails";
-import Cart from "./components/home/Cart";
+import SellerManagement from "./components/admin/addSeller/SellerManagement";
+import DelevryMan from "./components/admin/addDelevryMan/DelevryMan";
+import AddAds from "./components/admin/addAds/AddAds";
+import AddOrder from "./components/admin/addOrder/addOrder";
 
 function Router(){
 
@@ -42,7 +44,8 @@ function Router(){
             <Route exact path="/validateAccount/:token" component={ValidateAccount} />
             <Route exact path="/products/:category" component={ProductsByCategory} />
             <Route exact path="/product/:idProduct" component={ProductDetails} />
-            <Route exact path="/cart" component={Cart} />
+
+            
             
             {
                 userRole == "seller" && <>
@@ -70,16 +73,20 @@ function Router(){
                 role == "root" && <>
                     <Route path='/admin/addAdmin' exact component={AddAdmin} />
                     <Route path='/admin/updatePassword' exact component={UpdatePassword} />
-                    <Route path='/admin/sellerManagement' exact component={AddSeller} />
-
-                    
+                    <Route path='/admin/sellerValidation' exact component={AddSeller} />
+                    <Route path='/admin/sellerManagement' exact component={SellerManagement}/>
+                    <Route path='/admin/delevryManManagement' exact component={DelevryMan}/>
+                    <Route path='/admin/adsManagement' exact component={AddAds}/>
+                    <Route path='/admin/orderManagement' exact component={AddOrder}/>
                 </>
             }
             {
                 role == "admin" && <>
-                    <Route path='/admin/normalAdmin' exact component={SideBarAdmin} />
                     <Route path='/admin/updatePassword' exact component={UpdatePassword} />
-
+                    <Route path='/admin/sellerManagement' exact component={SellerManagement}/>
+                    <Route path='/admin/delevryManManagement' exact component={DelevryMan}/>
+                    <Route path='/admin/adsManagement' exact component={AddAds}/>
+                    <Route path='/admin/orderManagement' exact component={AddOrder}/>
                 </>
             }
 

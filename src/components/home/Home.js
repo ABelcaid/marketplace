@@ -15,9 +15,12 @@ const Home = () => {
     const [goldProducts,setGoldProducts] = useState('');
     const [metalProducts,setMetalProducts] = useState('');
     const [silverProducts,setSilverProducts] = useState('');
-
+    const [ads,setAds] = useState('');
 
     useEffect(async()=>{
+
+
+        
 
 
         try {
@@ -33,6 +36,8 @@ const Home = () => {
             const response5 = await axios.get(`${process.env.REACT_APP_URL_API}/product/productByCategory/silver/4`);
 
 
+            const adsRes = await axios.get(`${process.env.REACT_APP_URL_API}/ads/getAds`);
+
 
 
             setCopperProducts(response1.data);
@@ -45,7 +50,7 @@ const Home = () => {
 
             setSilverProducts(response5.data);
 
-           
+            setAds(adsRes.data);
 
             
         } catch (error) {
@@ -71,29 +76,26 @@ const Home = () => {
 
         <>
         <NavBar/>
+
+        
         <div className="container mx-auto flex items-center flex-wrap pt-4 pb-12">
 
-        {/* <div className="container mx-auto px-6">
-            <div className="h-64 rounded-md overflow-hidden bg-cover bg-center" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1577655197620-704858b270ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1280&q=144")'}}>
+        <div className="container mx-auto px-6">
+            <div className="h-64 rounded-md overflow-hidden bg-cover bg-center" style={{backgroundImage: `url(${ads && ads.image})`}}>
                 <div className="bg-gray-900 bg-opacity-50 flex items-center h-full">
                 <div className="px-10 max-w-xl">
-                    <h2 className="text-2xl text-white font-semibold">Sport Shoes</h2>
-                    <p className="mt-2 text-gray-400">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore facere provident molestias ipsam sint voluptatum pariatur.</p>
-                    <button className="flex items-center mt-4 px-3 py-2 bg-blue-600 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500">
-                    <span>Shop Now</span>
-                    <svg className="h-5 w-5 mx-2" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} viewBox="0 0 24 24" stroke="currentColor"><path d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </button>
+                    <h2 className="text-2xl text-white font-semibold">{ads && ads.description}</h2>
+                  
                 </div>
                 </div>
             </div>
-        </div> */}
+        </div>
 
 
-        {/* <img src={homeImg} className="w-auto"/> */}
 
 
         </div>
-        <section className="bg-white py-8">
+        <section className="bg-white py-8 ">
             <div className="container mx-auto flex items-center flex-wrap pt-4 pb-12">
                 <nav id="store" className="w-full z-30 top-0 px-6 py-1">
                 <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3">
@@ -101,13 +103,7 @@ const Home = () => {
                     Products by category
                     </a>
                     <div className="flex items-center" id="store-nav-content">
-                    <select className="pl-3 inline-block no-underline hover:text-black" name="" id="">
-                            <option value="">DH</option>
-                            <option value="">USD</option>
-                        </select>
-             
-
-             
+                
                
                     </div>
                 </div>
@@ -129,14 +125,19 @@ const Home = () => {
                      diamondProducts &&
                      diamondProducts.map((product) =>(
 
-                        <div   key={product._id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-                        <Link to={`/product/${product._id}`}>
-                            <img className="hover:grow hover:shadow-lg" src={product.image} />
-                            <div className="pt-3 flex items-center justify-between">
-                            <p className>{product.name}</p>
-        
+                        <div key={product._id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+                        <Link to={`/product/${product._id}`} >
+                            <img className="hover:grow hover:shadow-lg" src={product.image} />  
+                            <div>
+                            <div className="flex items-center justify-between mt-3">
+                                <div>
+                                    <a href="#" className="font-medium">{product.name}</a>
+                                  
+                                    </div>
+                                    <span className="flex items-center h-8 text-white  bg-blue-500 text-sm px-2 rounded">{product.price}  <span> € </span></span>
+                                </div>
                             </div>
-                            <p className="pt-1 text-gray-900">{product.price} <span>DH</span></p>
+
                         </Link>
                         </div>
                        

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const Statistic = () => {
 
-    const [numListedProducts,setNumListedProducts] = useState(0);
+    const [sellerStatistic,setSellerStatistic] = useState(0);
 
 
 
@@ -15,10 +15,12 @@ const Statistic = () => {
 
         // get number of listed products 
 
-        let listedProduct = await axios.get(`${process.env.REACT_APP_URL_API}/numListedProduct`);
+        let res = await axios.get(`${process.env.REACT_APP_URL_API}/sellerStatistic`);
 
         
-        setNumListedProducts(listedProduct.data);
+        setSellerStatistic(res.data);
+
+        console.log(res.data);
 
         
        
@@ -46,17 +48,19 @@ const Statistic = () => {
                                         <h1 className="title-font font-medium text-xl mb-2 text-gray-900">Moon hashtag pop-up try-hard offal truffaut</h1>
                                         <div className="leading-relaxed">Pour-over craft beer pug drinking vinegar live-edge gastropub, keytar neutra sustainable fingerstache kickstarter.</div>
                                     </div>
-                                    <div className="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
-                                        <h2 className="title-font font-medium text-3xl text-gray-900">{numListedProducts && numListedProducts}</h2>
-                                        <p className="">Total  Income in DH</p>
-                                    </div>
 
                                     <div className="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
-                                        <h2 className="title-font font-medium text-3xl text-gray-900">2</h2>
-                                        <p className="">Selled Products</p>
+                                        <h2 className="title-font font-medium text-3xl text-gray-900">{sellerStatistic && sellerStatistic.typeAccount}</h2>
+                                        <p className="">Type Acount</p>
                                     </div>
                                     <div className="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
-                                        <h2 className="title-font font-medium text-3xl text-gray-900">{numListedProducts && numListedProducts}</h2>
+                                        <h2 className="title-font font-medium text-3xl text-gray-900">{sellerStatistic && sellerStatistic.income}</h2>
+                                        <p className="">Total  Income in EUR</p>
+                                    </div>
+
+                                    
+                                    <div className="p-4 sm:w-1/2 lg:w-1/4 w-1/2">
+                                        <h2 className="title-font font-medium text-3xl text-gray-900">{sellerStatistic && sellerStatistic.listedProduct}</h2>
                                         <p className="">Listed Products</p>
                                     </div>
                                     </div>

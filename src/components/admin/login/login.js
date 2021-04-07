@@ -48,7 +48,7 @@ const Login = () => {
           history.push('/admin/addAdmin');
   
         }else{
-          history.push('/admin/home');
+          history.push('/admin/sellerManagement');
   
         }
       }

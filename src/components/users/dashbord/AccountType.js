@@ -1,6 +1,92 @@
 import UserDashbord from "./UserDashbord";
 
+import StripeCheckout from "react-stripe-checkout";
+
+import toastr from 'toastr';
+import "toastr/build/toastr.css";
+import axios from "axios";
+import { useState } from "react";
+
 const AccountType = () => {
+
+  
+
+
+    async function handleTokenProAccount(token) {
+
+
+        let product = {
+            type : 'pro',
+            price : 3000
+        }
+
+       
+
+        const response = await axios.post(
+            `${process.env.REACT_APP_URL_API}/accountType/upgradeAccount`,
+          { token,product }
+        );
+        const { status } = response.data;
+        console.log("Response:", response.data);
+        if (status === "success") {
+
+          
+
+          toastr.info('Success! Check email for details', {
+            positionClass: "toast-top-left",
+        })
+
+        } else {
+
+
+          toastr.warning('Something went wrong', {
+            positionClass: "toast-top-left",
+        })
+        }
+      }
+
+
+
+      async function handleTokenExpertAccount(token) {
+
+        let product = {
+            type : 'expert',
+            price : 5000
+        }
+       
+
+        const response = await axios.post(
+            `${process.env.REACT_APP_URL_API}/accountType/upgradeAccount`,
+          { token,product }
+        );
+        const { status } = response.data;
+        console.log("Response:", response.data);
+        if (status === "success") {
+
+          
+
+          toastr.info('Success! Check email for details', {
+            positionClass: "toast-top-left",
+        })
+
+        } else {
+
+
+          toastr.warning('Something went wrong', {
+            positionClass: "toast-top-left",
+        })
+        }
+      }
+
+
+
+
+
+
+
+
+
+
     return ( 
         <>
         <div className="flex flex-wrap bg-gray-100 w-full h-screen">
@@ -43,7 +129,7 @@ const AccountType = () => {
                                         </span>Standard Delivery
                                     </p>
 
-                                    <button className="flex items-center mt-auto text-white bg-indigo-500 border-0 py-2 px-4 w-full focus:outline-none hover:bg-indigo-600 rounded">Buy
+                                    <button className="flex items-center mt-auto text-white bg-indigo-500 border-0 py-2 px-4 w-full focus:outline-none hover:bg-indigo-600 rounded">Free
                                         <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 ml-auto" viewBox="0 0 24 24">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                         </svg>
@@ -56,7 +142,7 @@ const AccountType = () => {
                                     <h2 className="text-sm tracking-widest title-font mb-1 font-medium">PRO</h2>
                                     <h1 className="text-5xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
                                         <span>3000</span>
-                                        <span className="text-lg ml-1 font-normal text-gray-500">DH</span>
+                                        <span className="text-lg ml-1 font-normal text-gray-500">EUR</span>
                                     </h1>
                                     <p className="flex items-center text-gray-600 mb-2">
                                         <span className="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
@@ -72,12 +158,24 @@ const AccountType = () => {
                                         </svg>
                                         </span>Standard Delivery
                                     </p>
-                                    <button className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Buy
+
+                                    {/* <button className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Buy
                                         <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 ml-auto" viewBox="0 0 24 24">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                         </svg>
-                                    </button>
-                                    <p className="text-xs text-gray-500 mt-3">free after you selle more than 5000 Dhs.</p>
+                                    </button> */}
+
+
+                                    <StripeCheckout className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded"
+                                        stripeKey="pk_test_51IcsGEHRH7LB9NYW6q5Xed7pHznPT7shwEfb0NhkWdVIHB489oWS4E2iypkwCEeO8KOYLG5FEAro7SQToOlrCOga00Q09necQB"
+                                        name={'Pro Account'}
+                                        token={handleTokenProAccount}
+                                        amount={30 * 100}
+                                    />  
+
+
+
+                                    <p className="text-xs text-gray-500 mt-3">free after you selle more than 5000 EUR.</p>
                                     </div>
                                 </div>
                                 <div className="p-4 xl:w-1/3 md:w-1/2 w-full">
@@ -85,7 +183,7 @@ const AccountType = () => {
                                     <h2 className="text-sm tracking-widest title-font mb-1 font-medium">Expert</h2>
                                     <h1 className="text-5xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
                                         <span>5000</span>
-                                        <span className="text-lg ml-1 font-normal text-gray-500">DH</span>
+                                        <span className="text-lg ml-1 font-normal text-gray-500">EUR</span>
                                     </h1>
                                     <p className="flex items-center text-gray-600 mb-2">
                                         <span className="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
@@ -102,12 +200,19 @@ const AccountType = () => {
                                         </span>Express Delivery
                                     </p>
 
-                                    <button className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Buy
+                                    {/* <button className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Buy
                                         <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 ml-auto" viewBox="0 0 24 24">
                                         <path d="M5 12h14M12 5l7 7-7 7" />
                                         </svg>
-                                    </button>
-                                    <p className="text-xs text-gray-500 mt-3">free after you selle more than 20 000 Dh Dhs.</p>
+                                    </button> */}
+
+                                    <StripeCheckout className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded"
+                                        stripeKey="pk_test_51IcsGEHRH7LB9NYW6q5Xed7pHznPT7shwEfb0NhkWdVIHB489oWS4E2iypkwCEeO8KOYLG5FEAro7SQToOlrCOga00Q09necQB"
+                                        name={'Expert Account'}
+                                        token={handleTokenExpertAccount}
+                                        amount={50 * 100}
+                                    /> 
+                                    <p className="text-xs text-gray-500 mt-3">free after you selle more than 20 000 EUR Dhs.</p>
                                     </div>
                                 </div>
                                 </div>

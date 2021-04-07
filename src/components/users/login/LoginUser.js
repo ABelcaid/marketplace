@@ -12,6 +12,7 @@ import "toastr/build/toastr.css";
 import Footer from "../../global/Footer";
 import NavBar from "../../global/NavBar";
 import AuthContext from '../../../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const LoginUser = () => {
 
@@ -81,7 +82,7 @@ const LoginUser = () => {
         <NavBar/>
 
         <form onSubmit={handleSubmit}>
-        <section className="text-gray-600 body-font">
+        <section className="text-gray-600 body-font h-screen">
             <div className="container px-5 py-24 mx-auto flex flex-wrap items-center">
                 <div className="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
                 <h1 className="title-font font-medium text-3xl text-gray-900">What is Lorem Ipsum?</h1>
@@ -106,8 +107,11 @@ const LoginUser = () => {
                     />
                 </div>
 
-                <button type="submit" className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Create an account</button>
-                <p className="text-xs text-gray-500 mt-3">Sign in to eBay or create an account</p>
+                <button type="submit" className="text-white bg-blue-500 hover:bg-blue-700 border-0 py-2 px-8 focus:outline-none  rounded text-lg">Login</button>
+                <Link to={'/register'}>
+                <p className="text-xs text-gray-500 mt-3">Create an account</p>
+                </Link>
+                
                 </div>
             </div>
         </section>

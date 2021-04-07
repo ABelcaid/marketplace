@@ -3,12 +3,16 @@ import { useContext, useState } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/AuthContext";
+import { HelmetProvider } from "react-helmet-async";
+
 
 
 
 
 
 const NavBar = () => {
+
+
 
 
   const userLoggedIn = useContext (AuthContext);
@@ -85,19 +89,16 @@ const NavBar = () => {
               <Link to={'/products/metal'} className="text-base font-medium text-gray-500 hover:text-gray-900">Metal</Link>
               <Link to={'/products/silver'} className="text-base font-medium text-gray-500 hover:text-gray-900">Silver</Link>
               <Link to={'/products/copper'} className="text-base font-medium text-gray-500 hover:text-gray-900">Copper</Link>
+
+              <div id="google_translate_element" ></div>
+              
               
 
             </nav>
 
             
             <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-            <a className="no-underline hover:text-black     ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 " href="#">
-                <svg className="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
-                  <path d="M21,7H7.462L5.91,3.586C5.748,3.229,5.392,3,5,3H2v2h2.356L9.09,15.414C9.252,15.771,9.608,16,10,16h8 c0.4,0,0.762-0.238,0.919-0.606l3-7c0.133-0.309,0.101-0.663-0.084-0.944C21.649,7.169,21.336,7,21,7z M17.341,14h-6.697L8.371,9 h11.112L17.341,14z" />
-                  <circle cx="10.5" cy="18.5" r="1.5" />
-                  <circle cx="17.5" cy="18.5" r="1.5" />
-                </svg>
-              </a>
+          
               <Link to={'/dashbord'} className="no-underline hover:text-black  ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 " href="#">
                 <svg className="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
                   <circle fill="none" cx={12} cy={7} r={3} />
@@ -118,17 +119,17 @@ const NavBar = () => {
                  Logout
                 </a>
                 ):(
-                  <a
-                  href="#"
+                  <Link to={'/login'}
                   className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white  bg-blue-500 hover:bg-blue-700"
                 >
                  login
-                </a>
+                </Link>
                 )
               }
 
-           
+
             </div>
+            
           </div>
         </div>
 
