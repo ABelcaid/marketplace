@@ -19,6 +19,8 @@ import SellerManagement from "./components/admin/addSeller/SellerManagement";
 import DelevryMan from "./components/admin/addDelevryMan/DelevryMan";
 import AddAds from "./components/admin/addAds/AddAds";
 import AddOrder from "./components/admin/addOrder/addOrder";
+import Auction from "./components/home/Auction";
+import AddAuction from "./components/admin/addAuction/AddAuction";
 
 function Router(){
 
@@ -53,7 +55,7 @@ function Router(){
                     <Route path='/dashboard' exact component={DashboardHome} />
                     <Route path='/accountType' exact component={AccountType} />
                     <Route path='/statistic' exact component={Statistic} />
-                    
+                    <Route path='/auction' exact component={Auction} />
                     
 
                 </>
@@ -64,6 +66,7 @@ function Router(){
             {
                 userRole == "buyer"  && <>
                     <Route path='/dashboard' exact component={DashboardHome} />
+                    <Route path='/auction' exact component={Auction} />
 
                 </>
             }
@@ -78,6 +81,7 @@ function Router(){
                     <Route path='/admin/delevryManManagement' exact component={DelevryMan}/>
                     <Route path='/admin/adsManagement' exact component={AddAds}/>
                     <Route path='/admin/orderManagement' exact component={AddOrder}/>
+                    <Route exact path="/admin/AddAuction" component={AddAuction} />
                 </>
             }
             {

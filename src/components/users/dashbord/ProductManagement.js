@@ -81,6 +81,22 @@ const ProductManagement = () => {
   
   })
 
+
+
+  const handleDelete = (id) => {
+
+ 
+    axios.delete(`${process.env.REACT_APP_URL_API}/product/deleteProduct/${id}`)
+    .then(res => {
+      
+      toastr.info( res.data.message, {
+        positionClass: "toast-top-left",
+      })
+       
+    })
+
+  }
+
   
 
     return ( 
@@ -145,11 +161,11 @@ const ProductManagement = () => {
                                                         value={category}
                                                         onChange={(e)=>setCategory(e.target.value)}
                                                         >
-                                                        <option value="root">diamond</option>
-                                                        <option value="root"> Gold</option>
-                                                        <option value="root">metal</option>
-                                                        <option value="root">silver</option>
-                                                        <option value="root">copper</option>
+                                                        <option value="diamond">diamond</option>
+                                                        <option value="gold"> gold</option>
+                                                        <option value="metal">metal</option>
+                                                        <option value="silver">silver</option>
+                                                        <option value="copper">copper</option>
                                                         
                                                     </select>
                                                 </div>
@@ -231,17 +247,12 @@ const ProductManagement = () => {
                       </td> */}
                       <td className="py-3 px-6 text-center">
                         <div className="flex item-center justify-center">
-                          <div  className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
+                          <div onClick={()=>{handleDelete(product._id)}} className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
                             <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                           </div>
-                          <div  className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"  >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                            </svg>
-
-                          </div>
+                         
                         </div>
                       </td>
                     </tr>

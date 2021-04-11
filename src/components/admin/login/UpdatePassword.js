@@ -2,7 +2,8 @@ import imageUpdatePassword from '../img/login.svg';
 import { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
-
+import toastr from 'toastr';
+import "toastr/build/toastr.css";
 
 
 
@@ -23,8 +24,26 @@ const UpdatePassword = () => {
     try {
       const res = await  axios.put(`${process.env.REACT_APP_URL_API}/admin/updatePassword`, {password : password});
 
-  
-              history.push('/admin');
+      if(res.data.error !== undefined){
+
+        res.data.error.forEach(item =>{
+
+            toastr.warning(item ,{
+                positionClass: "toast-top-left",
+            })
+        })
+
+      }else{
+
+        history.push('/admin');
+
+        
+        toastr.info(' SuccessFully Updated', {
+          positionClass: "toast-top-left",
+        })
+
+      }
+              
 
 
   

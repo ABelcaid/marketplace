@@ -3,7 +3,8 @@ import { useContext, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router';
 import AuthContext from '../../../context/AuthContext';
-
+import toastr from 'toastr';
+import "toastr/build/toastr.css";
 
 
 
@@ -30,28 +31,65 @@ const Login = () => {
       const admin = {email,password};
       let res = await  axios.post(`${process.env.REACT_APP_URL_API}/admin`, admin);
 
-      setFirstLogin(res.data.first_login);
-      setRole(res.data.role);
-
-      localStorage.setItem('adminName',res.data.adminName)
 
 
+          console.log(res.data.error);
 
 
-      if (res.data.first_login == false) {
+          if(res.data.error !== undefined){
+
+            res.data.error.forEach(item =>{
+
+                toastr.warning(item ,{
+                    positionClass: "toast-top-left",
+                })
+            })
+
+          }else{
+
+            
+            setFirstLogin(res.data.first_login);
+            setRole(res.data.role);
+            localStorage.setItem('adminName',res.data.adminName)
+
+                
+
+                  toastr.info(' SuccessFully logged', {
+              positionClass: "toast-top-left",
+            })
+
+
+            if (res.data.first_login == false) {
 
               history.push('/admin/updatePassword')
 
-      }else{
-        if (res.data.role == 'root') {  
+            }else{
+              if (res.data.role == 'root') {  
 
-          history.push('/admin/addAdmin');
+                history.push('/admin/addAdmin');
+        
+              }else{
+                history.push('/admin/sellerManagement');
+        
+              }
+            }
+
+
+          }
+
+
+
+
+
+
+
+
+      
+
+
+
+
   
-        }else{
-          history.push('/admin/sellerManagement');
-  
-        }
-      }
 
 
       getLoggedIn();
@@ -78,7 +116,7 @@ const Login = () => {
       <div>
     
       </div>
-      <div className="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">Kaito Kid</div>
+      <div className="text-2xl text-indigo-800 tracking-wide ml-2 font-semibold">MarketPlaece</div>
     </div>
   </div>
   <div className="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
@@ -96,7 +134,7 @@ const Login = () => {
           <input 
             className="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"  
             placeholder="user@gmail.com"
-            type="text" 
+            type="email" 
            value={email}
            onChange={(e)=>setEmail(e.target.value)}
             

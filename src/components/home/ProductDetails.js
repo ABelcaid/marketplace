@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import Footer from "../global/Footer"
 import NavBar from "../global/NavBar";
 
@@ -13,6 +13,7 @@ import "toastr/build/toastr.css";
 const ProductDetails = () => {
 
 
+  const history = useHistory();
 
     const [product,setProduct] = useState('');
 
@@ -93,7 +94,7 @@ const ProductDetails = () => {
         console.log("Response:", response.data);
         if (status === "success") {
 
-          
+          history.push('/')
 
           toastr.info('Success! Check email for details', {
             positionClass: "toast-top-left",
@@ -157,7 +158,7 @@ const ProductDetails = () => {
                     <h2 className="text-sm title-font text-gray-500 tracking-widest">{product && product.category}</h2>
                     <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product && product.name}</h1>
                   
-                    <p className="leading-relaxed">Fam locavore kickstarter distillery. Mixtape chillwave tumeric sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo juiceramps cornhole raw denim forage brooklyn. Everyday carry +1 seitan poutine tumeric. Gastropub blue bottle austin listicle pour-over, neutra jean shorts keytar banjo tattooed umami cardigan.</p>
+                    <p className="leading-relaxed">{product && product.description}</p>
                     <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                  
                     <div className="flex ml-6 items-center">

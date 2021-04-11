@@ -1,3 +1,16 @@
+// const AddAuction = () => {
+
+//     return ( 
+//         <div>
+//             yw
+//         </div>
+//      );
+// }
+ 
+// export default AddAuction;
+
+
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import SideBarAdmin from "../sideBar/SideBarAdmin";
@@ -7,17 +20,14 @@ import "toastr/build/toastr.css";
 
 
 
-const AddAdmin = () => {
+const AddAuction = () => {
 
   const [name,setName] = useState('');
-  const [email ,setEmail] = useState('');
-  const [phone ,setPhone] = useState('');
-  const [password,setPassword] = useState('');
-  const [role,setRole] = useState('');
-  const [city,setCity] = useState('');
-  const [admins,setAdmins] = useState(null);
+  const [description ,setDescription] = useState('');
+  const [price ,setPrice] = useState('');
 
-  let token = localStorage.getItem("token");
+  const [products ,setProducts] = useState('');
+
 
 
 
@@ -26,27 +36,27 @@ const AddAdmin = () => {
     
     e.preventDefault();
 
-    const admin = {name,email,phone,password,role,city};
+    // const admin = {name,email,phone,password,role,city};
  
 
-    let res = await axios.post(`${process.env.REACT_APP_URL_API}/admin/add`, admin);
+    // let res = await axios.post(`${process.env.REACT_APP_URL_API}/admin/add`, admin);
 
 
 
-    if(res.data.error !== undefined){
+    // if(res.data.error !== undefined){
 
-      res.data.error.forEach(item =>{
+    //   res.data.error.forEach(item =>{
 
-          toastr.warning(item ,{
-              positionClass: "toast-top-left",
-          })
-      })
+    //       toastr.warning(item ,{
+    //           positionClass: "toast-top-left",
+    //       })
+    //   })
 
-    } else{
-      toastr.info( res.data.message, {
-      positionClass: "toast-top-left",
-    })
-    }
+    // } else{
+    //   toastr.info( res.data.message, {
+    //   positionClass: "toast-top-left",
+    // })
+    // }
 
     
 
@@ -54,33 +64,22 @@ const AddAdmin = () => {
   }
 
 
-  // ----------------------detete admin --------------------------
 
 
-    const handleDelete = (id) => {
-
- 
-    axios.delete(`${process.env.REACT_APP_URL_API}/admin/deleteAdmin/${id}`)
-    .then(res => {
-      console.log(res);
-       
-    })
-
-  }
 
 
-  useEffect(()=>{
+//   useEffect(()=>{
 
-    axios.get('http://localhost:8080/admin/all')
-    .then(function (response) {
+//     axios.get('http://localhost:8080/admin/all')
+//     .then(function (response) {
      
-      setAdmins(response.data)
+//       setproducts(response.data)
     
-    }).catch(function (err) {
-      console.log(err);
-  });
+//     }).catch(function (err) {
+//       console.log(err);
+//   });
   
-  })
+//   })
 
   
 
@@ -103,8 +102,8 @@ const AddAdmin = () => {
                                         <div className="px-4 py-5 bg-white sm:p-6">
                                             <div className="grid grid-cols-6 gap-6">
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="first_name"
-                                                        className="block text-sm font-medium text-gray-700">Full
+                                                    <label htmlFor="name"
+                                                        className="block text-sm font-medium text-gray-700">
                                                         name</label>
 
                                                     <input type="text" name="name" id="name"
@@ -115,59 +114,31 @@ const AddAdmin = () => {
                                                         />
                                                 </div>
                                                 <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="Phone"
-                                                        className="block text-sm font-medium text-gray-700">Phone</label>
+                                                    <label htmlFor="description"
+                                                        className="block text-sm font-medium text-gray-700">Description</label>
 
-                                                    <input type="text" name="Phone" id="Phone"
+                                                    <input type="text" name="description" id="description"
                                                        
                                                         className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                                                        value={phone}
-                                                        onChange={(e)=>setPhone(e.target.value)}
+                                                        value={description}
+                                                        onChange={(e)=>setDescription(e.target.value)}
                                                         />
                                                 </div>
                                                 <div className="col-span-6 sm:col-span-4">
-                                                    <label htmlFor="email_address"
-                                                        className="block text-sm font-medium text-gray-700">Email
-                                                        address</label>
+                                                    <label htmlFor="price"
+                                                        className="block text-sm font-medium text-gray-700">Price
+                                                        </label>
 
-                                                    <input type="eamil" name="email_address" id="email_address"
+                                                    <input type="number" name="price" id="price"
                                                         
                                                         className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                                        value={email}
-                                                        onChange={(e)=>setEmail(e.target.value)}
+                                                        value={price}
+                                                        onChange={(e)=>setPrice(e.target.value)}
                                                         />
                                                 </div>
-                                                <div className="col-span-6 sm:col-span-3">
-                                                    <label htmlFor="role"
-                                                        className="block text-sm font-medium text-gray-700">Role</label>
-                                                    <select id="role" name="role" autoComplete="role"
-                                                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                                        value={role}
-                                                        onChange={(e)=>setRole(e.target.value)}
-                                                        >
-                                                        <option value="root">root</option>
-                                                        <option value="admin">admin</option>
-                                                    </select>
-                                                </div>
+                                             
                                      
-                                                <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                                                    <label htmlFor="password"
-                                                        className="block text-sm font-medium text-gray-700">password</label>
-                                                    <input type="password" name="password" id="password"
-                                                        className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                                                        value={password}
-                                                        onChange={(e)=>setPassword(e.target.value)}
-                                                        />
-                                                </div>
-                                                <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                                                    <label htmlFor="city"
-                                                        className="block text-sm font-medium text-gray-700">City</label>
-                                                    <input type="text" name="city" id="city"
-                                                        className=" h-9 mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" 
-                                                        value={city}
-                                                        onChange={(e)=>setCity(e.target.value)}
-                                                        />
-                                                </div>
+                                           
 
                                             </div>
                                         </div>
@@ -183,7 +154,7 @@ const AddAdmin = () => {
                         </div>
                     </div>
 
-                    {/* table of admins */}
+                    {/* table of products */}
 
                     
       
@@ -194,19 +165,18 @@ const AddAdmin = () => {
               <table className="min-w-max w-full table-auto">
                 <thead>
                   <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                    <th className="py-3 px-6 text-left">Full Name</th>
-                    <th className="py-3 px-6 text-left">Phone</th>
-                    <th className="py-3 px-6 text-center">Email Address</th>
-                    <th className="py-3 px-6 text-center">Role</th>
-                    <th className="py-3 px-6 text-center">City</th>
+                    <th className="py-3 px-6 text-left"> Name</th>
+                    <th className="py-3 px-6 text-left">Description</th>
+                    <th className="py-3 px-6 text-center">Price</th>
+
                     <th className="py-3 px-6 text-center">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-600 text-sm font-light">
+                {/* <tbody className="text-gray-600 text-sm font-light">
                   
                   {
-                    admins &&
-                    admins.map((admin) =>(
+                    products &&
+                    products.map((admin) =>(
 
                       <tr key={admin._id} className="border-b border-gray-200 hover:bg-gray-100">
                       <td className="py-3 px-6 text-left whitespace-nowrap">
@@ -249,7 +219,7 @@ const AddAdmin = () => {
 
 
                   
-                </tbody>
+                </tbody> */}
               </table>
             </div>
           </div>
@@ -264,4 +234,4 @@ const AddAdmin = () => {
      );
 }
  
-export default AddAdmin;
+export default AddAuction;

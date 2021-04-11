@@ -159,11 +159,15 @@ const Home = () => {
                         <div  key={product._id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                         <Link to={`/product/${product._id}`}>
                             <img className="hover:grow hover:shadow-lg" src={product.image} />
-                            <div className="pt-3 flex items-center justify-between">
-                            <p className>{product.name}</p>
-        
+                            <div>
+                            <div className="flex items-center justify-between mt-3">
+                                <div>
+                                    <a href="#" className="font-medium">{product.name}</a>
+                                  
+                                    </div>
+                                    <span className="flex items-center h-8 text-white  bg-blue-500 text-sm px-2 rounded">{product.price}  <span> € </span></span>
+                                </div>
                             </div>
-                            <p className="pt-1 text-gray-900">{product.price}</p>
                         </Link>
                         </div>
                        
@@ -186,11 +190,15 @@ const Home = () => {
                         <div  key={product._id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                         <Link to={`/product/${product._id}`}>
                             <img className="hover:grow hover:shadow-lg" src={product.image} />
-                            <div className="pt-3 flex items-center justify-between">
-                            <p className>{product.name}</p>
-        
+                            <div>
+                            <div className="flex items-center justify-between mt-3">
+                                <div>
+                                    <a href="#" className="font-medium">{product.name}</a>
+                                  
+                                    </div>
+                                    <span className="flex items-center h-8 text-white  bg-blue-500 text-sm px-2 rounded">{product.price}  <span> € </span></span>
+                                </div>
                             </div>
-                            <p className="pt-1 text-gray-900">{product.price}</p>
                         </Link>
                         </div>
                        
@@ -213,11 +221,15 @@ const Home = () => {
                         <div  key={product._id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                         <Link to={`/product/${product._id}`}>
                             <img className="hover:grow hover:shadow-lg" src={product.image} />
-                            <div className="pt-3 flex items-center justify-between">
-                            <p className>{product.name}</p>
-        
+                            <div>
+                            <div className="flex items-center justify-between mt-3">
+                                <div>
+                                    <a href="#" className="font-medium">{product.name}</a>
+                                  
+                                    </div>
+                                    <span className="flex items-center h-8 text-white  bg-blue-500 text-sm px-2 rounded">{product.price}  <span> € </span></span>
+                                </div>
                             </div>
-                            <p className="pt-1 text-gray-900">{product.price}</p>
                         </Link>
                         </div>
                        
@@ -240,11 +252,15 @@ const Home = () => {
                         <div key={product._id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                         <Link to={`/product/${product._id}`}>
                             <img className="hover:grow hover:shadow-lg" src={product.image} />
-                            <div className="pt-3 flex items-center justify-between">
-                            <p className>{product.name}</p>
-        
+                            <div>
+                            <div className="flex items-center justify-between mt-3">
+                                <div>
+                                    <a href="#" className="font-medium">{product.name}</a>
+                                  
+                                    </div>
+                                    <span className="flex items-center h-8 text-white  bg-blue-500 text-sm px-2 rounded">{product.price}  <span> € </span></span>
+                                </div>
                             </div>
-                            <p className="pt-1 text-gray-900">{product.price}</p>
                         </Link>
                         </div>
                        
