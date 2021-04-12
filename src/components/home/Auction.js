@@ -49,9 +49,40 @@ const Auction = () => {
   
     const [timerSeconds , setTimerSeconds ] = useState();
 
+
+   
+
     
 
     let userName = localStorage.getItem('userName');
+
+
+
+    
+
+
+    const timmer = setTimeout(() => {
+
+      if (timerSeconds && timerSeconds > 0) {
+
+        
+
+        setTimerSeconds( timerSeconds && timerSeconds - 1);
+
+        if (db) {
+
+                     db.collection("timer").doc("gKKsX6G8x3NhTVhvnaUP").update({
+                      seconds: timerSeconds && timerSeconds - 1
+                    });
+        }
+
+
+
+       
+        
+      }      
+    }, 1000);
+
     
 
 
@@ -90,7 +121,7 @@ const Auction = () => {
 
     if (givedPriceInt <= lastMaxPrice) {
 
-        alert(`You need to enter more than ${lastMaxPrice} if you want to buy the product `)
+        alert(`You need to enter more than ${lastMaxPrice} EUR if you want to buy the product `)
         
     }else {
 
@@ -101,6 +132,13 @@ const Auction = () => {
                 givedPrice :givedPriceInt
     
             })
+
+            console.log(userName)
+            
+            db.collection("timer").doc("gKKsX6G8x3NhTVhvnaUP").update({
+              seconds: 60 
+            });
+            
         }
 
     }
@@ -169,21 +207,26 @@ const Auction = () => {
 
 
 
-            // const timer = db
-            // .collection("timer")
-            // .limit(1)
-            // .onSnapshot((querySnapshot) => {
-            //   const dataTimer = querySnapshot.docs.map((doc) => ({
-            //     ...doc.data(),
-            //     id: doc.id,
-            //   }));
+            const timer = db
+            .collection("timer")
+            .limit(1)
+            .onSnapshot((querySnapshot) => {
+              const dataTimer = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+              }));
               
-            //   setTimerSeconds(dataTimer);
+              setTimerSeconds(dataTimer[0].seconds);
+              
+              console.log('====================================');
+              console.log(dataTimer[0].seconds);
+              console.log('====================================');
+              
 
-            // });
+            });
           
         }
-      }, [db]);
+      }, [db,timerSeconds]);
 
 
   
@@ -194,13 +237,33 @@ const Auction = () => {
     <NavBar/>
 
 
+    {
+      timerSeconds === 0 ?  
+      
+      <section className="text-gray-600 body-font h-screen">
+      <div className="container px-5 py-24 mx-auto">
+        <div className="flex flex-col text-center w-full mb-12">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Auction is Over</h1>
+          <p className="lg:w-2/3 mx-auto leading-relaxed text-base">Thank you for your participation</p>
+        </div>
+   
+      </div>
+    </section>
+     : 
+
+
+
+   
+    
+
+
     
 
 
      <section className="text-gray-600 body-font">
-       <h1>{timerSeconds}</h1>
+     
 
-     {/* <h1 className="text-center text-4xl"><span>{timerSeconds && timerSeconds[0].seconds}</span> <span>S</span></h1> */}
+     <h1 className="text-center text-4xl" style={{height : "10px" , width : "100%"}}><span>{timerSeconds }</span> </h1>
 
     <div className="container px-5 py-24 mx-auto flex flex-wrap">
 
@@ -343,6 +406,7 @@ const Auction = () => {
       </div>
     </div>
   </section>
+  }
   <Footer/>
     </>
     
