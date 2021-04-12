@@ -46,7 +46,7 @@ const ProductDetails = () => {
     useEffect(async()=>{
 
 
-      fetch('http://data.fixer.io/api/latest?access_key=afe4bd8abcfd1a927150d247ad43ac84')
+      fetch('http://data.fixer.io/api/latest?access_key=7c40185690b75364e8456f8feadb2d29')
       .then(currencyRes => currencyRes.json())
       .then(data => {
       
