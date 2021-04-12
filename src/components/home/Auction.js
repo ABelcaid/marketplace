@@ -7,6 +7,15 @@ import { useEffect, useRef, useState } from "react";
 import firebase from 'firebase/app';
 
 import 'firebase/firestore';
+import axios from "axios";
+
+
+import StripeCheckout from "react-stripe-checkout";
+
+import toastr from 'toastr';
+import "toastr/build/toastr.css";
+import { useHistory } from "react-router";
+
 
 
 firebase.initializeApp({
@@ -26,14 +35,19 @@ const db = firebase.firestore();
 
 
 
+let x = 10
 
+let d = 10
 
 
 
 const Auction = () => {
 
 
+    const history = useHistory();
+
     const [messages, setMessages] = useState([]);
+
     const [messageToSend, setMessageToSend] = useState();
 
     const [product, setProduct] = useState();
@@ -42,20 +56,15 @@ const Auction = () => {
 
     const [maxGivedPrice , setMaxGivedPrice ] = useState();
 
-
-    // ------------------------timer ---------------------
-
-
-  
     const [timerSeconds , setTimerSeconds ] = useState();
 
 
-   
-
-    
-
+  
     let userName = localStorage.getItem('userName');
 
+    let lastbuyer = maxGivedPrice && maxGivedPrice[0].buyerName
+
+    let lastMaxPrice = maxGivedPrice &&  maxGivedPrice[0].givedPrice;
 
 
     
@@ -104,8 +113,7 @@ const Auction = () => {
 
         })
     }
-
-  
+ 
 
 
   }
@@ -117,7 +125,7 @@ const Auction = () => {
     let givedPriceInt = parseInt(givedPrice);
 
     // check the max price 
-    let lastMaxPrice = maxGivedPrice[0].givedPrice;
+  
 
     if (givedPriceInt <= lastMaxPrice) {
 
@@ -217,16 +225,46 @@ const Auction = () => {
               }));
               
               setTimerSeconds(dataTimer[0].seconds);
-              
-              console.log('====================================');
-              console.log(dataTimer[0].seconds);
-              console.log('====================================');
+            
               
 
             });
           
         }
       }, [db,timerSeconds]);
+
+
+
+
+      
+      async function handleToken(token, addresses) {
+
+       
+
+        const response = await axios.post(
+            `${process.env.REACT_APP_URL_API}/checkout/checkout`,
+          { token, product }
+        );
+        const { status } = response.data;
+        console.log("Response:", response.data);
+        if (status === "success") {
+
+          history.push('/')
+
+          toastr.info('Success! Check email for details', {
+            positionClass: "toast-top-left",
+        })
+
+        } else {
+
+
+          toastr.warning('Something went wrong', {
+            positionClass: "toast-top-left",
+        })
+        }
+      }
+
+
 
 
   
@@ -238,13 +276,31 @@ const Auction = () => {
 
 
     {
-      timerSeconds === 0 ?  
+      timerSeconds === 0  && userName === lastbuyer ?  
       
       <section className="text-gray-600 body-font h-screen">
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-col text-center w-full mb-12">
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Auction is Over</h1>
           <p className="lg:w-2/3 mx-auto leading-relaxed text-base">Thank you for your participation</p>
+          <StripeCheckout 
+                        stripeKey="pk_test_51IcsGEHRH7LB9NYW6q5Xed7pHznPT7shwEfb0NhkWdVIHB489oWS4E2iypkwCEeO8KOYLG5FEAro7SQToOlrCOga00Q09necQB"
+                        name={product && product[0].name}
+                        token={handleToken}
+                        billingAddress
+                        shippingAddress
+                        amount={lastMaxPrice * 100}
+                    />
+        </div>
+   
+      </div>
+    </section>
+    :  timerSeconds === 0  && userName !== lastbuyer ?
+    <section className="text-gray-600 body-font h-screen">
+      <div className="container px-5 py-24 mx-auto">
+        <div className="flex flex-col text-center w-full mb-12">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Auction is Over</h1>
+          <p className="lg:w-2/3 mx-auto leading-relaxed text-base">Thank you for your participation </p>
         </div>
    
       </div>
