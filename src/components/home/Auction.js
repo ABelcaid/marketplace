@@ -35,9 +35,7 @@ const db = firebase.firestore();
 
 
 
-let x = 10
 
-let d = 10
 
 
 
@@ -48,11 +46,11 @@ const Auction = () => {
 
     const [messages, setMessages] = useState([]);
 
-    const [messageToSend, setMessageToSend] = useState();
+    const [messageToSend, setMessageToSend] = useState('');
 
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState(null);
 
-    const [givedPrice , setGivedPrice] = useState();
+    const [givedPrice , setGivedPrice] = useState(null);
 
     const [maxGivedPrice , setMaxGivedPrice ] = useState();
 
@@ -162,7 +160,7 @@ const Auction = () => {
 
             // --------------get product ------------------------
 
-            const product = db
+            const products = db
             .collection("product")
             .limit(1)
             .onSnapshot((querySnapshot) => {
@@ -211,6 +209,8 @@ const Auction = () => {
               
               setMaxGivedPrice(dataPrice);
 
+           
+
             });
 
 
@@ -231,37 +231,37 @@ const Auction = () => {
             });
           
         }
-      }, [db,timerSeconds]);
+      }, [db,timerSeconds,maxGivedPrice]);
 
 
 
 
       
-      async function handleToken(token, addresses) {
-
-       
-
-        const response = await axios.post(
-            `${process.env.REACT_APP_URL_API}/checkout/checkout`,
-          { token, product }
-        );
-        const { status } = response.data;
-        console.log("Response:", response.data);
-        if (status === "success") {
-
-          history.push('/')
-
-          toastr.info('Success! Check email for details', {
-            positionClass: "toast-top-left",
-        })
-
-        } else {
+      async function handleToken(token) {
 
 
-          toastr.warning('Something went wrong', {
-            positionClass: "toast-top-left",
-        })
-        }
+
+
+        history.push('/')
+
+        toastr.info('Congratulations! ', {
+          positionClass: "toast-top-left",
+      })
+      if (db) {
+
+        db.collection("timer").doc("gKKsX6G8x3NhTVhvnaUP").update({
+         seconds: 60
+       });
+
+       db.collection("finalBuyer").doc().delete();
+
+
+      db.collection("messages").doc().delete();
+
+      db.collection("product").doc().delete();
+      }
+
+    
       }
 
 
@@ -333,7 +333,7 @@ const Auction = () => {
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{product && product[0].name}</h1>
             <p className="mb-8 leading-relaxed">{product && product[0].description}</p>
             <p className="mb-8 leading-relaxed"> Init Price :  {product && product[0].intPrice} $</p>
-            <p className="mb-8 leading-relaxed"> Gived Price :  {maxGivedPrice && maxGivedPrice[0].givedPrice} $</p>
+            <p className="mb-8 leading-relaxed"> Gived Price :  {lastMaxPrice} $</p>
                 <div className="container mx-auto flex px-5  md:flex-row flex-col items-center">
                     <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
                     <img className="object-cover object-center rounded" alt="hero" src={product && product[0].image} />
@@ -407,47 +407,38 @@ const Auction = () => {
                     </div>
 
                     <form onSubmit={addMessage}>
-                    <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
-                        
-
-                            
-
-                            <div>
-                              
-                            </div>
-                            <div className="flex-grow ml-4">
-                                <div className="relative w-full">
-                                    <input type="text"
-                                        className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" 
-                                        value={messageToSend}
-                                        onChange={(e)=>setMessageToSend(e.target.value)}
-                                        />
-                                    <div
-                                        className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
-                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="ml-4">
-                                <button type="submit"
-                                    className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
-                                    <span>Send</span>
-                                    <span className="ml-2">
-                                        <svg className="w-4 h-4 transform rotate-45 -mt-px" fill="none"
-                                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                                        </svg>
-                                    </span>
-                                </button>
-                            </div>
-
-                    
-                    </div>
+                      <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
+                              <div className="flex-grow ml-4">
+                                  <div className="relative w-full">
+                                      <input type="text"
+                                          className="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10" 
+                                          value={messageToSend}
+                                          onChange={(e)=>setMessageToSend(e.target.value)}
+                                          />
+                                      <div
+                                          className="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
+                                          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                              xmlns="http://www.w3.org/2000/svg">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                          </svg>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div className="ml-4">
+                                  <button type="submit"
+                                      className="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
+                                      <span>Send</span>
+                                      <span className="ml-2">
+                                          <svg className="w-4 h-4 transform rotate-45 -mt-px" fill="none"
+                                              stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                          </svg>
+                                      </span>
+                                  </button>
+                              </div>
+                        </div>
                     </form>
                     
                 </div>
